@@ -6,6 +6,7 @@ db = SQLAlchemy()
 
 
 class Cupcake(db.Model):
+    """Cupcake model"""
 
     __tablename__ = "cupcakes"
 
@@ -33,6 +34,8 @@ class Cupcake(db.Model):
     )
 
     def serialize(self):
+        """Serializes object into dictionary for use with JSON"""
+
         return {
             "id": self.id,
             "flavor": self.flavor,

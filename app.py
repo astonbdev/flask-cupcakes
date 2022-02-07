@@ -25,6 +25,7 @@ app.config['SECRET_KEY'] = "test"
 
 @app.get("/api/cupcakes")
 def show_all_cupcakes():
+    """Returns all cupcakes in database as JSON"""
 
     cupcakes = Cupcake.query.all()
 
@@ -35,6 +36,7 @@ def show_all_cupcakes():
 
 @app.get("/api/cupcakes/<int:cupcake_id>")
 def show_cupcake(cupcake_id):
+    """Returns info about individual cupcake in JSON"""
 
     cupcake = Cupcake.query.get_or_404(cupcake_id)
 
@@ -45,12 +47,20 @@ def show_cupcake(cupcake_id):
 
 @app.post("/api/cupcakes")
 def create_cupcake():
+    """Creates a new cupcake instance 
+    from request.json and adds it to existing database 
+    then returns cupcake instance as JSON"""
+
+    try: 
+        image=request.json["image"]
+    except KeyError:
+        image=None
 
     cupcake = Cupcake(
         flavor=request.json["flavor"],
         size=request.json["size"],
         rating=request.json["rating"],
-        image=request.json["image"]
+        image=image
     )
 
     db.session.add(cupcake)
