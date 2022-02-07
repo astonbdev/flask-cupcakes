@@ -44,6 +44,9 @@ class Cupcake(db.Model):
             "image": self.image
         }
 
+    def set_attribute(self, key, value):
+        self.__dict__[key] = value
+
 
 def connect_db(app):
     """Connect to database."""
