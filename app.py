@@ -81,8 +81,8 @@ def update_cupcake(cupcake_id):
 
     if request.json.get("size"):
         cupcake.size = request.json["size"]
-
-    if request.json.get("rating"):
+    
+    if request.json.get("rating") or request.json.get("rating") == 0:
         cupcake.rating = request.json["rating"]
 
     if request.json.get("image"):

@@ -35,7 +35,7 @@ CUPCAKE_PATCH_HAPPY = {
 }
 
 CUPCAKE_PATCH_PARTIAL = {
-    "flavor": "PatchFlavor"
+    "flavor": "TestFlavor"
 }
 
 
@@ -151,20 +151,12 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(data, {
                 "cupcake": {
                     "id": self.cupcake.id,
-                    "flavor": "PatchFlavor",
-                    "size": "TestSize",
-                    "rating": 5,
-                    "image": "http://test.com/cupcake.jpg"
+                    "flavor": "TestFlavor",
+                    "size": "PatchSize",
+                    "rating": 0,
+                    "image": "http://patch.com/updated-cupcake.jpg"
                 }
             })
-
-        with app.test_client() as client:
-            # Sad Path
-
-            url = f"/api/cupcakes/{self.cupcake.id}"
-            resp = client.patch(url)
-
-            self.assertEqual(resp.status_code, 400)
 
         with app.test_client() as client:
             # Empty Path
@@ -178,9 +170,9 @@ class CupcakeViewsTestCase(TestCase):
                 "cupcake": {
                     "id": self.cupcake.id,
                     "flavor": "TestFlavor",
-                    "size": "TestSize",
-                    "rating": 5,
-                    "image": "http://test.com/cupcake.jpg"
+                    "size": "PatchSize",
+                    "rating": 0,
+                    "image": "http://patch.com/updated-cupcake.jpg"
                 }
             })
 
@@ -203,6 +195,6 @@ class CupcakeViewsTestCase(TestCase):
             # Sad Path
 
             url = "api/cupcakes/-1"
-            resp.client.delete(url)
+            resp = client.delete(url)
 
             self.assertEqual(resp.status_code, 404)
