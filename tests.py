@@ -129,7 +129,7 @@ class CupcakeViewsTestCase(TestCase):
             resp = client.patch(url, json=CUPCAKE_PATCH_HAPPY)
 
             self.assertEqual(resp.status_code, 200)
-            data = resp.json.copy()
+            data = resp.json
             self.assertEqual(data, {
                 "cupcake": {
                     "id": self.cupcake.id,
