@@ -1,6 +1,6 @@
 """Flask app for Cupcakes"""
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, Cupcake
@@ -21,6 +21,11 @@ app.config['SECRET_KEY'] = os.getenv("APP_SECRET_KEY")
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 # debug = DebugToolbarExtension(app)
+
+
+@app.get("/")
+def show_homepage():
+    return render_template("index.html")
 
 
 @app.get("/api/cupcakes")
@@ -81,7 +86,7 @@ def update_cupcake(cupcake_id):
 
     if request.json.get("size"):
         cupcake.size = request.json["size"]
-    
+
     if request.json.get("rating") or request.json.get("rating") == 0:
         cupcake.rating = request.json["rating"]
 

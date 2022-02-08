@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link
+      href="https://bootswatch.com/5/minty/bootstrap.css"
+      rel="stylesheet">
+  <link href="static/cupcake.css" rel="stylesheet">
+  <title>Cupcakes!</title>
+</head>
+<body>
+
+<ul id="cupcake-list">
+
+</ul>
+
+<div> ADD A CUPCAKE!
+    <form id="addCupcakeForm">
+        <label name="flavor" for="flavor">Flavor</label>
+        <input name="flavor">
+        <label name="size" for="size">size</label>
+        <input name="size">
+        <label name="rating" for="rating">rating</label>
+        <input name="rating">
+        <label name="imgURL" for="imgURL">Image URL</label>
+        <input name="imgURL" type="URL">
+        <button class="btn btn-primary">Add Cupcake</button>
+    </form>
+</div>
+
+<script src="https://unpkg.com/jquery"></script>
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+<script src="/static/cupcake.js"></script>
+</body>
+</html>
