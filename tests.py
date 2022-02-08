@@ -27,6 +27,17 @@ CUPCAKE_DATA_2 = {
     "image": "http://test.com/cupcake2.jpg"
 }
 
+CUPCAKE_PATCH_HAPPY = {
+    "flavor": "PatchFlavor",
+    "size": "PatchSize",
+    "rating": 0,
+    "image": "http://patch.com/updated-cupcake.jpg"
+}
+
+CUPCAKE_PATCH_PARTIAL = {
+    "flavor": "PatchFlavor"
+}
+
 
 class CupcakeViewsTestCase(TestCase):
     """Tests for views of API."""
@@ -108,3 +119,90 @@ class CupcakeViewsTestCase(TestCase):
             })
 
             self.assertEqual(Cupcake.query.count(), 2)
+
+    def test_patch_cupcake(self):
+        """tests patch cupcake route"""
+        with app.test_client() as client:
+            # Happy Path
+
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url, json=CUPCAKE_PATCH_HAPPY)
+
+            self.assertEqual(resp.status_code, 200)
+            data = resp.json.copy()
+            self.assertEqual(data, {
+                "cupcake": {
+                    "id": self.cupcake.id,
+                    "flavor": "PatchFlavor",
+                    "size": "PatchSize",
+                    "rating": 0,
+                    "image": "http://patch.com/updated-cupcake.jpg"
+                }
+            })
+
+        with app.test_client() as client:
+            # Partial Path
+
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url, json=CUPCAKE_PATCH_PARTIAL)
+
+            self.assertEqual(resp.status_code, 200)
+            data = resp.json
+            self.assertEqual(data, {
+                "cupcake": {
+                    "id": self.cupcake.id,
+                    "flavor": "PatchFlavor",
+                    "size": "TestSize",
+                    "rating": 5,
+                    "image": "http://test.com/cupcake.jpg"
+                }
+            })
+
+        with app.test_client() as client:
+            # Sad Path
+
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url)
+
+            self.assertEqual(resp.status_code, 400)
+
+        with app.test_client() as client:
+            # Empty Path
+
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url, json={})
+
+            self.assertEqual(resp.status_code, 200)
+            data = resp.json
+            self.assertEqual(data, {
+                "cupcake": {
+                    "id": self.cupcake.id,
+                    "flavor": "TestFlavor",
+                    "size": "TestSize",
+                    "rating": 5,
+                    "image": "http://test.com/cupcake.jpg"
+                }
+            })
+
+    def test_delete_cupcake(self):
+        """tests delete cupcake route"""
+
+        with app.test_client() as client:
+            # Happy Path
+
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 200)
+            data = resp.json
+            self.assertEqual(data, {
+                "deleted": self.cupcake.id
+            })
+
+        with app.test_client() as client:
+            # Sad Path
+
+            url = "api/cupcakes/-1"
+            resp.client.delete(url)
+
+            self.assertEqual(resp.status_code, 404)
